@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>{{ $title ?? 'E-Market' }}</title>
+    <title>404 &mdash; Stisla</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -12,59 +12,36 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
+    <!-- CSS Libraries -->
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('stisla') }}/assets/css/style.css">
     <link rel="stylesheet" href="{{ asset('stisla') }}/assets/css/components.css">
-    <link rel="stylesheet" href="{{ asset('stisla') }}/assets/css/custom.css">
-
-    <!-- Specific Page CSS / JS / Meta Tag -->
-    @stack('head')
 </head>
 
 <body>
     <div id="app">
-        <div class="main-wrapper">
-            <div class="navbar-bg"></div>
-
-            <!-- Navbar -->
-            @include('admin.layouts.topnav')
-            <!-- Main Sidebar -->
-            @include('admin.layouts.sidebar')
-
-            <!-- Main Content -->
-            <div class="main-content">
-                <section class="section">
-                    <!-- Content Header -->
-                    @hasSection('content-header')
-                        <div class="section-header">
-                            @yield('content-header')
+        <section class="section d-flex align-items-center" style="min-height: 100vh">
+            <div class="container">
+                <div class="page-error">
+                    <div class="page-inner">
+                        <h1>404</h1>
+                        <div class="page-description">
+                            Halaman yang kamu cari tidak dapat ditemukan.
                         </div>
-                    @else
-                        <div class="section-header">
-                            <h1>{{ $title ?? 'E-Market' }}</h1>
+                        <div class="page-search">
+                            <div class="mt-3">
+                                <a href="/">Kembali ke home</a>
+                            </div>
                         </div>
-                    @endif
-
-                    <!-- Content Body -->
-                    <div class="section-body">
-                        @yield('content')
                     </div>
-                </section>
+                </div>
+                <div class="simple-footer mt-5">
+                    Copyright &copy; Stisla 2018
+                </div>
             </div>
-            <footer class="main-footer">
-                <div class="footer-left">
-                    Copyright &copy; 2021 <div class="bullet"></div> Built By <a href="https://github.com/virgiawanly" target="_blank">Virgiawan Listiyandi</a> <div class="bullet"></div> Design By <a
-                        href="https://nauval.in/" target="_blank">Muhamad Nauval Azhar</a>
-                </div>
-                <div class="footer-right">
-                    1.0.1
-                </div>
-            </footer>
-        </div>
+        </section>
     </div>
-
-    <!-- Outer section -->
-    @stack('bottom')
 
     <!-- General JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -86,7 +63,6 @@
     <script src="{{ asset('stisla') }}/assets/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
-    @stack('script')
 </body>
 
 </html>
