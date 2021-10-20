@@ -18,9 +18,7 @@ class CreateBarangTable extends Migration
             $table->string('kode_barang', 50);
             $table->foreignId('produk_id')->constrained('produk')->onUpdate('cascade');
             $table->string('nama_barang');
-            $table->string('merek');
             $table->string('satuan');
-            $table->double('harga_beli');
             $table->tinyInteger('diskon')->default(0);
             $table->double('harga_jual');
             $table->integer('stok');

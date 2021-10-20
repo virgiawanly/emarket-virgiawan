@@ -25,9 +25,7 @@
                                 </th>
                                 <th>Kode Barang</th>
                                 <th>Jenis Produk</th>
-                                <th>Merek</th>
                                 <th>Nama Barang</th>
-                                <th>Harga Beli</th>
                                 <th>Harga Jual</th>
                                 <th>Diskon</th>
                                 <th>Satuan</th>
@@ -92,13 +90,7 @@
                         data: 'nama_produk'
                     },
                     {
-                        data: 'merek'
-                    },
-                    {
                         data: 'nama_barang'
-                    },
-                    {
-                        data: 'harga_beli'
                     },
                     {
                         data: 'harga_jual'
@@ -150,6 +142,7 @@
                         title: res.message
                     });
                 }).fail((err) => {
+                    console.log(err.responseJSON);
                     if (err.status === 422) {
                         displayErrors(err.responseJSON.errors);
                     };
@@ -197,8 +190,6 @@
                     $('#modalForm [name=produk_id]').val(res.produk_id);
                     $('#modalForm [name=nama_barang]').val(res.nama_barang);
                     $('#modalForm [name=kode_barang]').val(res.kode_barang);
-                    $('#modalForm [name=merek]').val(res.merek);
-                    $('#modalForm [name=harga_beli]').val(res.harga_beli);
                     $('#modalForm [name=harga_jual]').val(res.harga_jual);
                     $('#modalForm [name=diskon]').val(res.diskon);
                     $('#modalForm [name=satuan]').val(res.satuan);

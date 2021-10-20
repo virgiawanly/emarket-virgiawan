@@ -34,9 +34,6 @@ class BarangController extends Controller
             ->addColumn('nama_produk', function ($barang) {
                 return $barang->produk->nama_produk;
             })
-            ->editColumn('harga_beli', function ($produk) {
-                return "Rp " . number_format($produk->harga_beli);
-            })
             ->editColumn('harga_jual', function ($produk) {
                 return "Rp " . number_format($produk->harga_jual);
             })
@@ -70,19 +67,17 @@ class BarangController extends Controller
     {
         $request->validate([
             'produk_id' => 'required|exists:produk,id',
-            'merek' => 'required',
             'nama_barang' => 'required',
             'satuan' => 'required',
-            'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
-            'stok' => 'required|numeric',
         ]);
 
         $kode_barang = Barang::buat_kode_barang();
 
         $request->merge(['kode_barang' => $kode_barang]);
+        $request->merge(['stok' => 0]);
 
-        Barang::create($request->all());
+        Barang::create($request->all(['kode_barang', 'produk_id', 'nama_barang', 'satuan', 'harga_jual', 'diskon', 'stok']));
 
         return response()->json([
             'message' => 'Barang berhasil ditambahkan'
@@ -103,17 +98,6 @@ class BarangController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -126,15 +110,12 @@ class BarangController extends Controller
 
         $request->validate([
             'produk_id' => 'required|exists:produk,id',
-            'merek' => 'required',
             'nama_barang' => 'required',
             'satuan' => 'required',
-            'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
-            'stok' => 'required|numeric',
         ]);
 
-        $barang->update($request->only(['produk_id', 'merek', 'nama_barang', 'satuan', 'harga_beli', 'harga_jual', 'diskon', 'stok']));
+        $barang->update($request->only(['produk_id', 'nama_barang', 'satuan', 'harga_jual', 'diskon']));
 
         return response()->json([
             'message' => 'Barang berhasil diupdate'

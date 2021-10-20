@@ -12,16 +12,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="produkId">Produk</label>
+                        <label for="produkId">Jenis Produk</label>
                         <select name="produk_id" class="custom-select select-produk" id="produkId">
                             @foreach ($produk as $p)
                                 <option value="{{ $p->id }}">{{ $p->nama_produk }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="merek">Merek</label>
-                        <input type="text" name="merek" id="merek" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label for="namaBarang">Nama Barang</label>
@@ -32,20 +28,12 @@
                         <input type="text" name="satuan" id="satuan" class="form-control">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="hargaBeli">Harga Beli</label>
-                        <input type="number" name="harga_beli" id="hargaBeli" class="form-control" autocomplete="off">
-                    </div>
-                    <div class="form-group mb-3">
                         <label for="hargaJual">Harga Jual</label>
                         <input type="number" name="harga_jual" id="hargaJual" class="form-control" autocomplete="off">
                     </div>
                     <div class="form-group mb-3">
                         <label for="diskon">Diskon</label>
                         <input type="number" value="0" name="diskon" id="diskon" class="form-control" autocomplete="off">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="stokProduk">Stok</label>
-                        <input type="number" value="1" name="stok" min="0" id="stokProduk" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
