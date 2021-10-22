@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="simple-footer mt-5">
-                    Copyright &copy; Stisla 2018
+                    Copyright &copy; E-Market 2021
                 </div>
             </div>
         </section>

@@ -26,9 +26,9 @@
             <!-- Transaction Area -->
             <li class="menu-header">Transaksi</li>
             <li class="{{ is_active_link('pembelian', 'pembelian/*') }}"><a class="nav-link" href="/pembelian"><i class="fas fa-download"></i>
-                    <span>Pembelian</span></a></li>
+                    <span>Pembelian / Stock In</span></a></li>
             <li class="{{ is_active_link('penjualan', 'penjualan/*') }}"><a class="nav-link" href="/penjualan"><i class="fas fa-upload"></i>
-                    <span>Penjualan</span></a></li>
+                    <span>Penjualan / Stock Out</span></a></li>
             <li class="{{ is_active_link('transaksi', 'transaksi/*') }}"><a class="nav-link" href="/transaksi-baru"><i class="fas fa-cash-register"></i>
                     <span>Transaksi Baru</span></a></li>
 

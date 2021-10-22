@@ -66,7 +66,6 @@
                 searching: true,
                 ordering: true,
                 responsive: true,
-                autoWidth: true,
                 ajax: {
                     url: '{{ route('pelanggan.data') }}',
                 },

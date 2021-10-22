@@ -3,6 +3,7 @@
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasokController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ProdukController;
 use App\Models\Produk;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,10 @@ Route::get('/pelanggan/data', [PelangganController::class, 'data'])->name('pelan
 Route::resource('/pelanggan', PelangganController::class);
 Route::get('/pemasok/data', [PemasokController::class, 'data'])->name('pemasok.data');
 Route::resource('/pemasok', PemasokController::class);
+Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+Route::get('/pembelian/detail/data/{id}', [PembelianController::class, 'detail_data'])->name('pembelian.detail');
+Route::get('/pembelian/transaksi-baru', [PembelianController::class, 'create'])->name('pembelian.create');
+Route::resource('/pembelian', PembelianController::class)->except('create');
 
 Route::get('/tentang-aplikasi', function(){
     return view('admin.tentang-aplikasi');

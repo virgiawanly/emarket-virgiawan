@@ -70,6 +70,7 @@ class BarangController extends Controller
             'nama_barang' => 'required',
             'satuan' => 'required',
             'harga_jual' => 'required|numeric',
+            'diskon' => 'numeric|min:0'
         ]);
 
         $kode_barang = Barang::buat_kode_barang();
@@ -113,6 +114,7 @@ class BarangController extends Controller
             'nama_barang' => 'required',
             'satuan' => 'required',
             'harga_jual' => 'required|numeric',
+            'diskon' => 'numeric|min:0'
         ]);
 
         $barang->update($request->only(['produk_id', 'nama_barang', 'satuan', 'harga_jual', 'diskon']));
