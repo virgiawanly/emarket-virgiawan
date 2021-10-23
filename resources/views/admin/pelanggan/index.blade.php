@@ -28,7 +28,7 @@
                                 <th>Email</th>
                                 <th>No Telepon</th>
                                 <th>Alamat</th>
-                                <th></th>
+                                <th><i class="fas fa-cog"></i></th>
                             </tr>
                         </thead>
                     </table>

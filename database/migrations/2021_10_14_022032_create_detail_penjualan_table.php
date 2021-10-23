@@ -18,6 +18,7 @@ class CreateDetailPenjualanTable extends Migration
             $table->foreignId('penjualan_id')->constrained('penjualan');
             $table->foreignId('barang_id')->constrained('barang');
             $table->double('harga_jual');
+            $table->tinyInteger('diskon')->default(0);
             $table->integer('jumlah');
             $table->double('sub_total');
             $table->timestamps();

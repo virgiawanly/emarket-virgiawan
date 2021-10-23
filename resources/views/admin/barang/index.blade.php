@@ -30,7 +30,7 @@
                                 <th>Diskon</th>
                                 <th>Satuan</th>
                                 <th>Stok</th>
-                                <th></th>
+                                <th><i class="fas fa-cog"></i></th>
                             </tr>
                         </thead>
                     </table>

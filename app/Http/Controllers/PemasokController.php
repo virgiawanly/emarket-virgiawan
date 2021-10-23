@@ -30,7 +30,11 @@ class PemasokController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($pemasok) {
                 $buttons = '<button type="button" onclick="editPemasok(`' . route('pemasok.update', $pemasok->id) . '`)" class="btn btn-sm btn-info mr-1" title="Edit Pemasok"><i class="fas fa-edit"></i></button>';
+                if($pemasok->canDelete()){
                 $buttons .= '<button type="button" onclick="deletePemasok(`' . route('pemasok.destroy', $pemasok->id) . '`)" class="btn btn-sm btn-danger" title="Hapus Pemasok"><i class="fas fa-trash"></i></button>';
+            } else {
+                $buttons .= '<button type="button" class="btn btn-sm btn-secondary" title="Hapus Pemasok"><i class="fas fa-ban"></i></button>';
+                }
                 return $buttons;
             })->rawColumns(['action'])->make(true);
     }

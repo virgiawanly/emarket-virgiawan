@@ -18,7 +18,7 @@ class CreatePenjualanTable extends Migration
             $table->string('no_faktur');
             $table->date('tgl_faktur');
             $table->double('total_bayar');
-            $table->foreignId('pelanggan_id')->constrained('pelanggan');
+            $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggan')->nullOnDelete();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

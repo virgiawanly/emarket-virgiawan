@@ -37,7 +37,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Produk</th>
-                                <th></th>
+                                <th><i class="fas fa-cog"></i></th>
                             </tr>
                         </thead>
                     </table>

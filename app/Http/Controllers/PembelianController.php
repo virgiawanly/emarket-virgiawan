@@ -44,7 +44,6 @@ class PembelianController extends Controller
             })
             ->addColumn('action', function ($pembelian) {
                 $buttons = '<button type="button" class="button-lihat-detail btn btn-sm btn-info mr-1" title="Lihat Detail" data-toggle="modal" data-target="#modalDetailPembelian" data-pembelian-id="' . $pembelian->id . '" data-kode-pembelian="' . $pembelian->kode_masuk .'"><i class="far fa-eye"></i></button>';
-                $buttons .= '<button type="button" class="btn btn-sm btn-danger" title="Hapus Barang"><i class="fas fa-trash"></i></button>';
                 return $buttons;
             })->rawColumns(['action'])->make(true);
     }

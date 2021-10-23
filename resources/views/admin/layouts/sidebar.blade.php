@@ -29,7 +29,7 @@
                     <span>Pembelian / Stock In</span></a></li>
             <li class="{{ is_active_link('penjualan', 'penjualan/*') }}"><a class="nav-link" href="/penjualan"><i class="fas fa-upload"></i>
                     <span>Penjualan / Stock Out</span></a></li>
-            <li class="{{ is_active_link('transaksi', 'transaksi/*') }}"><a class="nav-link" href="/transaksi-baru"><i class="fas fa-cash-register"></i>
+            <li class="{{ is_active_link('transaksi', 'transaksi/*') }}"><a class="nav-link" href="/transaksi"><i class="fas fa-cash-register"></i>
                     <span>Transaksi Baru</span></a></li>
 
             <!-- Utility Area -->
