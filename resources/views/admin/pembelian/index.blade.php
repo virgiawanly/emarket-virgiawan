@@ -130,7 +130,7 @@
             });
         });
 
-        $('#tablePembelian').on('click', '.button-lihat-detail', function(){
+        $('#tablePembelian').on('click', '.button-lihat-detail', function() {
             let id_pembelian = $(this).data('pembelian-id');
             let kode_pembelian = $(this).data('kode-pembelian');
             $('span.kode-pembelian').text(kode_pembelian);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Pelanggan;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -25,7 +26,7 @@ class PenjualanController extends Controller
      */
     public function data()
     {
-        $penjualan = Penjualan::with('detail')->latest()->get();
+        $penjualan = Penjualan::with(['detail', 'tampung_bayar'])->latest()->get();
 
         return DataTables::of($penjualan)
             ->addIndexColumn()
@@ -45,6 +46,12 @@ class PenjualanController extends Controller
             })
             ->editColumn('total_harga', function ($penjualan) {
                 return 'Rp ' . number_format($penjualan->total_bayar);
+            })
+            ->addColumn('diterima', function ($penjualan) {
+                return 'Rp ' . number_format($penjualan->tampung_bayar->terima);
+            })
+            ->addColumn('kembali', function ($penjualan) {
+                return 'Rp ' . number_format($penjualan->tampung_bayar->kembali);
             })
             ->addColumn('action', function ($penjualan) {
                 $buttons = '<button type="button" class="button-lihat-detail btn btn-sm btn-info mr-1" title="Lihat Detail" data-toggle="modal" data-target="#modalDetailPenjualan" data-penjualan-id="' . $penjualan->id . '" data-no-faktur="' . $penjualan->no_faktur . '"><i class="far fa-eye"></i></button>';
@@ -85,8 +92,10 @@ class PenjualanController extends Controller
     public function create()
     {
         $barang = Barang::with('produk')->get();
-        return view('admin.penjualan.penjualan-baru', [
+        $pelanggan = Pelanggan::get();
+        return view('admin.penjualan.penjualan_baru', [
             'barang' => $barang,
+            'pelanggan' => $pelanggan
         ]);
     }
 
@@ -98,7 +107,69 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'total_diterima' => 'required',
+            'barang_id' => 'required|array'
+        ]);
+
+        $no_faktur = Penjualan::buat_no_faktur();
+        $tgl_faktur = date('Y-m-d');
+        $user_id = 1;
+        $jumlah_barang = $request->jumlah;
+        $diskon = $request->diskon;
+
+        $list_barang = Barang::whereIn('id', $request->barang_id)->get();
+        $total_harga = $list_barang->reduce(function($total, $barang, $index) use ($jumlah_barang, $diskon) {
+            $harga_diskon = $barang->harga_jual - ($diskon[$index] / 100 * $barang->harga_jual);
+            return $total + floor($harga_diskon * $jumlah_barang[$index]);
+        });
+
+        $request->validate([
+            'total_diterima' => 'numeric|min:' . (int) $total_harga
+        ]);
+
+        $pelanggan_id = null;
+        if($request->kode_pelanggan){
+            $pelanggan = Pelanggan::where('kode_pelanggan', $request->kode_pelanggan)->first();
+            $pelanggan_id = $pelanggan ? $pelanggan->id : null;
+        }
+
+        $penjualan = Penjualan::create([
+            'no_faktur' => $no_faktur,
+            'tgl_faktur' => $tgl_faktur,
+            'total_bayar' => $total_harga,
+            'pelanggan_id' => $pelanggan_id,
+            'user_id' => $user_id,
+        ]);
+
+        foreach($list_barang as $index => $barang){
+            $harga_diskon = $barang->harga_jual - ($diskon[$index] / 100 * $barang->harga_jual);;
+            $subtotal = floor($harga_diskon * $jumlah_barang[$index]);
+
+            // Buat detail penjualan
+            $detail = $penjualan->detail()->create([
+                'barang_id' => $barang->id,
+                'harga_jual' => $barang->harga_jual,
+                'diskon' => $diskon[$index],
+                'jumlah' => $jumlah_barang[$index],
+                'sub_total' => $subtotal
+            ]);
+
+            // Update stok barang
+            $detail->barang()->decrement('stok', (int) $request->jumlah[$index]);
+        };
+
+
+        $penjualan->tampung_bayar()->create([
+            'total' => $total_harga,
+            'terima' => $request->total_diterima,
+            'kembali' => (int) $request->total_diterima - $total_harga
+        ]);
+
+        return response()->json([
+            'message' => 'Transaksi Berhasil',
+            'link_cetak_faktur' => '/'
+        ], 200);
     }
 
     /**

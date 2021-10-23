@@ -19,8 +19,8 @@
                     <div class="card-body pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal"
-                                    data-target="#modalPilihPemasok">Pilih
+                                <button class="btn btn-primary my-3" type="button" data-toggle="modal"
+                                    data-target="#modalPilihPemasok"><i class="fas fa-truck mr-1"></i> Pilih
                                     Pemasok</button>
                                 <table class="info-pemasok table table-sm table-borderless">
                                     <tr>
@@ -46,6 +46,7 @@
                                 </table>
                             </div>
                         </div>
+
                         <div class="form-group row mt-4">
                             <div class="col-md-2">
                                 <label for="cariBarang">Kode Barang</label>
@@ -79,7 +80,7 @@
                         <div class="row mt-2">
                             <div class="col-md-8">
                                 <div class="card">
-                                    <div class="card-body bg-primary text-white text-center">
+                                    <div class="card-body bg-dark text-white text-center">
                                         <h4 class="display-4 total-rupiah">Rp. 0</h4>
                                     </div>
                                     <div class="card-footer" style="background-color: #fcfcfc">
@@ -88,12 +89,21 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group row">
+                                <div class="form-group row mb-3">
+                                    <div class="col-sm-2">
+                                        <label for="tglBayar" class="label">Tgl</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="date" disabled id="tglBayar" placeholder="Rp "
+                                            class="form-control" value="{{date('Y-m-d')}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
                                     <div class="col-sm-2">
                                         <label for="totalBayar" class="label">Total</label>
                                     </div>
                                     <div class="col-sm-10">
-                                        <input type="text" disabled id="totalBayar" placeholder="Rp "
+                                        <input type="text" readonly id="totalBayar" placeholder="Rp "
                                             class="form-control">
                                     </div>
                                 </div>
@@ -140,6 +150,7 @@
         let tableListBarang;
 
         const formatter = new Intl.NumberFormat('id-ID');
+
         const toaster = Swal.mixin({
             toast: true,
             position: 'top-right',
@@ -151,7 +162,8 @@
             }
         });
 
-        function updateSubTotal() {
+        // Fungsi untuk mengupdate subtotal dari tiap barang
+        const updateSubTotal = function() {
             setTimeout(() => {
                 let harga_beli = parseInt($(this).closest('tr').find('input[name="harga_beli[]"]').val() || 0);
                 let jumlah = parseInt($(this).closest('tr').find('input[name="jumlah[]"]').val() || 0);
@@ -161,7 +173,8 @@
             });
         }
 
-        function updateTotalHarga() {
+        // Fungsi untuk mengupdate total harga
+        const updateTotalHarga = function() {
             setTimeout(() => {
                 let harga_beli = $('input[name="harga_beli[]"]').map((i, input) => parseInt($(input).val() || 0))
                     .get();
@@ -204,6 +217,7 @@
             });
         });
 
+        // Event ketika button pilih barang di klik
         $('#tablePilihBarang').on('click', '.button-pilih-barang', function() {
             let tbListBarang = $('#tableListBarang');
             let barang_id = $(this).data('barang-id');
@@ -247,20 +261,7 @@
             $('#modalPilihBarang').modal('hide');
         });
 
-        $('#tableListBarang').on('click', '.button-hapus-barang', function() {
-            tableListBarang.row($(this).parents('tr')).remove().draw();
-            updateTotalHarga();
-        });
-
-        $('#tableListBarang').on('keydown change', 'input[name="jumlah[]"]', updateSubTotal);
-        $('#tableListBarang').on('keydown change', 'input[name="harga_beli[]"]', updateSubTotal);
-
-        $('input.cari-barang').on('keydown', function() {
-            event.preventDefault();
-            $('#modalPilihBarang').modal('show');
-            $(this).val('');
-        });
-
+        // Event ketika button pilih pemasok di klik : update info pemasok
         $('#tablePilihPemasok').on('click', '.button-pilih-pemasok', function() {
             let row = $(this).closest('tr');
             let nama = row.find('td').eq(1).text();
@@ -280,6 +281,26 @@
             $('#modalPilihPemasok').modal('hide');
         });
 
+        // Event ketika menghapus barang dari list
+        $('#tableListBarang').on('click', '.button-hapus-barang', function() {
+            tableListBarang.row($(this).parents('tr')).remove().draw();
+            updateTotalHarga();
+        });
+
+        // Event ketika input jumlah diubah : update sub total
+        $('#tableListBarang').on('keydown change', 'input[name="jumlah[]"]', updateSubTotal);
+
+        // Event ketika input harga beli diubah : update sub total
+        $('#tableListBarang').on('keydown change', 'input[name="harga_beli[]"]', updateSubTotal);
+
+        // Event ketika input cari barang diubah : buka modal
+        $('input.cari-barang').on('keydown', function() {
+            event.preventDefault();
+            $('#modalPilihBarang').modal('show');
+            $(this).val('');
+        });
+
+        // Event ketika form di submit
         $('form#formPembelian').on('submit', function() {
             event.preventDefault();
             let url = $(this).attr('action');

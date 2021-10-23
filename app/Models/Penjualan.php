@@ -24,4 +24,15 @@ class Penjualan extends Model
     public function pelanggan(){
         return $this->belongsTo(Pelanggan::class);
     }
+
+    public function tampung_bayar(){
+        return $this->hasOne(TampungBayar::class);
+    }
+
+    public static function buat_no_faktur(){
+        $no_urut = self::selectRaw("IFNULL(MAX(SUBSTRING(`no_faktur`,10,5)),0) + 1 AS no_urut")->whereRaw("SUBSTRING(`no_faktur`,2,4) = '" . date('Y') . "'")->whereRaw("SUBSTRING(`no_faktur`,6,2) = '" . date('m') . "'")->orderBy('no_urut')->first()->no_urut;
+        $no_faktur = "O" . date("Ymd") . sprintf("%'.05d", $no_urut);
+        return $no_faktur;
+    }
+
 }

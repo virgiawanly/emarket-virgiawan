@@ -75,7 +75,7 @@ class PembelianController extends Controller
     {
         $barang = Barang::with('produk')->get();
         $pemasok = Pemasok::get();
-        return view('admin.pembelian.pembelian-baru', [
+        return view('admin.pembelian.pembelian_baru', [
             'barang' => $barang,
             'pemasok' => $pemasok
         ]);
@@ -91,6 +91,7 @@ class PembelianController extends Controller
     {
         $request->validate([
             'pemasok_id' => 'required|exists:pemasok,id',
+            'barang_id' => 'required|array'
         ]);
 
         $kode_masuk = Pembelian::buat_kode_pembelian();

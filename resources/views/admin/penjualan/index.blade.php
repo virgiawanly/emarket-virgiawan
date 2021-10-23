@@ -24,6 +24,8 @@
                                 <th>Total Item</th>
                                 <th>Operator</th>
                                 <th>Total Harga</th>
+                                <th>Diterima</th>
+                                <th>Kembali</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
@@ -62,7 +64,6 @@
                 searching: true,
                 ordering: true,
                 responsive: true,
-                autoWidth: true,
                 ajax: {
                     url: '{{ route('penjualan.data') }}',
                 },
@@ -83,6 +84,12 @@
                     },
                     {
                         data: 'total_harga'
+                    },
+                    {
+                        data: 'diterima'
+                    },
+                    {
+                        data: 'kembali'
                     },
                     {
                         data: 'action',
