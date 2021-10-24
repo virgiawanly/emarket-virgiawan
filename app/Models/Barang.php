@@ -18,6 +18,14 @@ class Barang extends Model
         return $this->belongsTo(Produk::class);
     }
 
+    public function pembelian(){
+        return $this->hasMany(PembelianDetail::class);
+    }
+
+    public function penjualan(){
+        return $this->hasMany(PenjualanDetail::class);
+    }
+
     /**
      * Menggenerate kode barang berdasarkan kode barang sebelumnya
      * @return string $kode_barang
@@ -26,5 +34,9 @@ class Barang extends Model
     {
         $barang = self::latest()->first() ?? new self();
         return 'B' . sprintf("%0". 8 . "s", (int) $barang->id + 1);
+    }
+
+    public function canDelete(){
+        return !$this->pembelian()->exists() && !$this->penjualan()->exists();
     }
 }

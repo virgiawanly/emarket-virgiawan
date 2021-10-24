@@ -27,7 +27,7 @@
                                 <th>Pemasok</th>
                                 <th>Operator</th>
                                 <th>Tanggal</th>
-                                <th>Total Barang</th>
+                                <th>Jenis Barang</th>
                                 <th>Total Bayar</th>
                                 <th><i class="fas fa-cog"></i></th>
                             </tr>
@@ -102,8 +102,8 @@
 
             tableDetailPembelian = $('#tableDetailPembelian').DataTable({
                 paging: true,
-                lengthChange: false,
-                searching: false,
+                lengthChange: true,
+                searching: true,
                 ordering: true,
                 columns: [{
                         data: 'DT_RowIndex',

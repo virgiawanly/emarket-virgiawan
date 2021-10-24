@@ -5,7 +5,7 @@
                 @method('post')
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pelanggan</h5>
+                    <h5 class="modal-title">Tambah Pemasok</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">
-                    <button type="submit" class="btn btn-primary modal-submit-button">Tambah Pelanggan</button>
+                    <button type="submit" class="btn btn-primary modal-submit-button">Tambah Pemasok</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 </div>
             </form>

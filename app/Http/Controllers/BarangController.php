@@ -42,7 +42,11 @@ class BarangController extends Controller
             })
             ->addColumn('action', function ($barang) {
                 $buttons = '<button type="button" onclick="editBarang(`' . route('barang.update', $barang->id) . '`)" class="btn btn-sm btn-info mr-1" title="Edit Barang"><i class="fas fa-edit"></i></button>';
-                $buttons .= '<button type="button" onclick="deleteBarang(`' . route('barang.destroy', $barang->id) . '`)" class="btn btn-sm btn-danger" title="Hapus Barang"><i class="fas fa-trash"></i></button>';
+                if($barang->canDelete()){
+                    $buttons .= '<button type="button" onclick="deleteBarang(`' . route('barang.destroy', $barang->id) . '`)" class="btn btn-sm btn-danger" title="Hapus Barang"><i class="fas fa-trash"></i></button>';
+                } else {
+                    $buttons .= '<button type="button" class="btn btn-sm btn-secondary" title="Tidak dapat dihapus"><i class="fas fa-ban"></i></button>';
+                }
                 return $buttons;
             })->rawColumns(['action'])->make(true);
     }
@@ -134,10 +138,16 @@ class BarangController extends Controller
     {
         $barang = Barang::findOrFail($id);
 
-        $barang->delete();
+        if($barang->canDelete()){
+            $barang->delete();
+
+            return response()->json([
+                'message' => 'Barang berhasil dihapus'
+            ], 200);
+        }
 
         return response()->json([
-            'message' => 'Barang berhasil dihapus'
-        ], 200);
+            'message' => 'Barang tidak dapat dihapus'
+        ], 422);
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
-use App\Models\Produk;
 use Illuminate\Support\Facades\Route;
 
 /*

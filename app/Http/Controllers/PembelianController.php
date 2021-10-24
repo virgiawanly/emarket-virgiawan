@@ -30,43 +30,44 @@ class PembelianController extends Controller
 
         return DataTables::of($pembelian)
             ->addIndexColumn()
-            ->addColumn('total_bayar', function($pembelian){
+            ->addColumn('total_bayar', function ($pembelian) {
                 return 'Rp ' . number_format($pembelian->total);
             })
-            ->addColumn('nama_user', function($pembelian){
+            ->addColumn('nama_user', function ($pembelian) {
                 return $pembelian->user->name;
             })
-            ->addColumn('total_barang', function($pembelian){
+            ->addColumn('total_barang', function ($pembelian) {
                 return $pembelian->detail->count();
             })
-            ->addColumn('nama_pemasok', function($pembelian){
+            ->addColumn('nama_pemasok', function ($pembelian) {
                 return $pembelian->pemasok->nama;
             })
             ->addColumn('action', function ($pembelian) {
-                $buttons = '<button type="button" class="button-lihat-detail btn btn-sm btn-info mr-1" title="Lihat Detail" data-toggle="modal" data-target="#modalDetailPembelian" data-pembelian-id="' . $pembelian->id . '" data-kode-pembelian="' . $pembelian->kode_masuk .'"><i class="far fa-eye"></i></button>';
+                $buttons = '<button type="button" class="button-lihat-detail btn btn-sm btn-info mr-1" title="Lihat Detail" data-toggle="modal" data-target="#modalDetailPembelian" data-pembelian-id="' . $pembelian->id . '" data-kode-pembelian="' . $pembelian->kode_masuk . '"><i class="far fa-eye"></i></button>';
                 return $buttons;
             })->rawColumns(['action'])->make(true);
     }
 
-    public function detail_data($id){
+    public function detail_data($id)
+    {
         $pembelian = Pembelian::with('detail')->find($id);
         $detail = $pembelian->detail;
 
         return DataTables::of($detail)
             ->addIndexColumn()
-            ->addColumn('kode_barang', function($detail){
+            ->addColumn('kode_barang', function ($detail) {
                 return $detail->barang->kode_barang;
             })
-            ->addColumn('nama_barang', function($detail){
+            ->addColumn('nama_barang', function ($detail) {
                 return $detail->barang->nama_barang;
             })
-            ->addColumn('jenis_produk', function($detail){
+            ->addColumn('jenis_produk', function ($detail) {
                 return $detail->barang->produk->nama_produk;
             })
-            ->editColumn('harga_beli', function($detail){
+            ->editColumn('harga_beli', function ($detail) {
                 return 'Rp ' . number_format($detail->harga_beli);
             })
-            ->editColumn('sub_total', function($detail){
+            ->editColumn('sub_total', function ($detail) {
                 return 'Rp ' . number_format($detail->sub_total);
             })->make(true);
     }
@@ -98,9 +99,14 @@ class PembelianController extends Controller
         $tanggal_masuk = date('Y-m-d');
         $pemasok_id = $request->pemasok_id;
         $user_id = 1;
-        $jumlah_barang = ($request->jumlah);
-        $total_harga = collect($request->harga_beli)->reduce(function($total, $price, $index) use ($jumlah_barang) {
-            return $total + (int) $price * (int) $jumlah_barang[$index];
+        $arr_jumlah = $request->jumlah;
+        $arr_barang_id = $request->barang_id;
+        $arr_harga_beli = $request->harga_beli;
+
+        $total_harga = collect($arr_harga_beli)->reduce(function ($total, $harga_beli, $index) use ($arr_jumlah) {
+            $harga_beli = (int) $harga_beli ?? 0;
+            $jumlah = (int) $arr_jumlah[$index] ?? 0;
+            return $total + $harga_beli * $jumlah;
         });
 
         $pembelian = Pembelian::create([
@@ -111,17 +117,20 @@ class PembelianController extends Controller
             'total' => $total_harga,
         ]);
 
-        foreach($request->barang_id as $index => $barang_id){
-            // Buat detail pembelian
-            $detail = $pembelian->detail()->create([
-                'barang_id' => $barang_id,
-                'harga_beli' => $request->harga_beli[$index],
-                'jumlah' => $request->jumlah[$index],
-                'sub_total' => (int) $request->harga_beli[$index] * (int) $request->jumlah[$index]
-            ]);
+        foreach ($arr_barang_id as $index => $barang_id) {
+            $harga_beli = (int) $request->harga_beli[$index] ?? 0;
+            $jumlah = (int) $request->jumlah[$index] ?? 0;
 
-            // Update stok barang
-            $detail->barang()->increment('stok', (int) $request->jumlah[$index]);
+            if ($jumlah !== 0) {
+                $detail = $pembelian->detail()->create([
+                    'barang_id' => $barang_id,
+                    'harga_beli' => $harga_beli,
+                    'jumlah' => $jumlah,
+                    'sub_total' => $harga_beli * $jumlah
+                ]);
+
+                $detail->barang()->increment('stok', $jumlah);
+            }
         };
 
         return response()->json([

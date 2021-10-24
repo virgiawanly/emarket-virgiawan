@@ -141,8 +141,8 @@
             clearErrors();
             $('#modalForm').modal('show');
 
-            $('#modalForm .modal-title').text('Tambah Pelanggan');
-            $('#modalForm .modal-submit-button').text('Tambah Pelanggan');
+            $('#modalForm .modal-title').text('Tambah Pemasok');
+            $('#modalForm .modal-submit-button').text('Tambah Pemasok');
             $('#modalForm form')[0].reset();
             $('#modalForm form').attr('action', url);
             $('#modalForm [name=_method]').val('post');

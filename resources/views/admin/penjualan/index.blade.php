@@ -22,7 +22,7 @@
                                 <th>Tanggal</th>
                                 <th>Kode Pelanggan</th>
                                 <th>Total Item</th>
-                                <th>Operator</th>
+                                <th>Kasir</th>
                                 <th>Total Harga</th>
                                 <th>Diterima</th>
                                 <th>Kembali</th>
@@ -80,7 +80,7 @@
                         data: 'total_item'
                     },
                     {
-                        data: 'nama_user'
+                        data: 'kasir'
                     },
                     {
                         data: 'total_harga'
@@ -101,8 +101,8 @@
 
             tableDetailPenjualan = $('#tableDetailPenjualan').DataTable({
                 paging: true,
-                lengthChange: false,
-                searching: false,
+                lengthChange: true,
+                searching: true,
                 ordering: true,
                 columns: [{
                         data: 'DT_RowIndex',

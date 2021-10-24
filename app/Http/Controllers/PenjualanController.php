@@ -41,17 +41,17 @@ class PenjualanController extends Controller
                     return $total + $detail->jumlah;
                 });
             })
-            ->addColumn('nama_user', function ($penjualan) {
+            ->addColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name;
             })
             ->editColumn('total_harga', function ($penjualan) {
                 return 'Rp ' . number_format($penjualan->total_bayar);
             })
             ->addColumn('diterima', function ($penjualan) {
-                return 'Rp ' . number_format($penjualan->tampung_bayar->terima);
+                return  $penjualan->tampung_bayar ? 'Rp' . number_format($penjualan->tampung_bayar->terima) : "Rp 0";
             })
             ->addColumn('kembali', function ($penjualan) {
-                return 'Rp ' . number_format($penjualan->tampung_bayar->kembali);
+                return $penjualan->tampung_bayar ? 'Rp ' . number_format($penjualan->tampung_bayar->kembali) : "Rp 0";
             })
             ->addColumn('action', function ($penjualan) {
                 $buttons = '<button type="button" class="button-lihat-detail btn btn-sm btn-info mr-1" title="Lihat Detail" data-toggle="modal" data-target="#modalDetailPenjualan" data-penjualan-id="' . $penjualan->id . '" data-no-faktur="' . $penjualan->no_faktur . '"><i class="far fa-eye"></i></button>';
@@ -77,7 +77,7 @@ class PenjualanController extends Controller
                 return 'Rp ' . number_format($detail->harga_jual);
             })
             ->editColumn('diskon', function($detail){
-                return $detail->diskon . '%';
+                return $detail->diskon ? $detail->diskon . '%' : '-';
             })
             ->editColumn('sub_total', function($detail){
                 return 'Rp ' . number_format($detail->sub_total);
@@ -109,23 +109,29 @@ class PenjualanController extends Controller
     {
         $request->validate([
             'total_diterima' => 'required',
-            'barang_id' => 'required|array'
+            'barang_id' => 'required|array',
+            'jumlah' => 'required|array',
+            'diskon' => 'required|array'
         ]);
 
         $no_faktur = Penjualan::buat_no_faktur();
         $tgl_faktur = date('Y-m-d');
         $user_id = 1;
-        $jumlah_barang = $request->jumlah;
-        $diskon = $request->diskon;
+        $arr_jumlah = $request->jumlah;
+        $arr_diskon = $request->diskon;
+        $arr_barang_id = $request->barang_id;
 
-        $list_barang = Barang::whereIn('id', $request->barang_id)->get();
-        $total_harga = $list_barang->reduce(function($total, $barang, $index) use ($jumlah_barang, $diskon) {
-            $harga_diskon = $barang->harga_jual - ($diskon[$index] / 100 * $barang->harga_jual);
-            return $total + floor($harga_diskon * $jumlah_barang[$index]);
+        $list_barang = Barang::whereIn('id', $arr_barang_id)->get();
+        $total_bayar = $list_barang->reduce(function($total, $barang, $index) use ($arr_jumlah, $arr_diskon) {
+            $diskon = (int) $arr_diskon[$index] ?? 0;
+            $jumlah = (int) $arr_jumlah[$index] ?? 0;
+            $harga_reguler = $barang->harga_jual * $jumlah;
+            $subtotal = floor($harga_reguler - ($diskon / 100 * $harga_reguler));
+            return $total + $subtotal;
         });
 
         $request->validate([
-            'total_diterima' => 'numeric|min:' . (int) $total_harga
+            'total_diterima' => 'numeric|min:' . $total_bayar
         ]);
 
         $pelanggan_id = null;
@@ -137,33 +143,35 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::create([
             'no_faktur' => $no_faktur,
             'tgl_faktur' => $tgl_faktur,
-            'total_bayar' => $total_harga,
+            'total_bayar' => $total_bayar,
             'pelanggan_id' => $pelanggan_id,
             'user_id' => $user_id,
         ]);
 
         foreach($list_barang as $index => $barang){
-            $harga_diskon = $barang->harga_jual - ($diskon[$index] / 100 * $barang->harga_jual);;
-            $subtotal = floor($harga_diskon * $jumlah_barang[$index]);
+            $jumlah = (int) $arr_jumlah[$index] ?? 0;
+            $diskon = (int) $arr_diskon[$index] ?? 0;
 
-            // Buat detail penjualan
-            $detail = $penjualan->detail()->create([
-                'barang_id' => $barang->id,
-                'harga_jual' => $barang->harga_jual,
-                'diskon' => $diskon[$index],
-                'jumlah' => $jumlah_barang[$index],
-                'sub_total' => $subtotal
-            ]);
+            if($jumlah !== 0){
+                $harga_reguler = $barang->harga_jual * $jumlah;
+                $subtotal = floor($harga_reguler - ($diskon / 100 * $harga_reguler));
 
-            // Update stok barang
-            $detail->barang()->decrement('stok', (int) $request->jumlah[$index]);
+                $detail = $penjualan->detail()->create([
+                    'barang_id' => $barang->id,
+                    'harga_jual' => $barang->harga_jual,
+                    'diskon' => $diskon,
+                    'jumlah' => $jumlah,
+                    'sub_total' => $subtotal
+                ]);
+
+                $detail->barang()->decrement('stok', $jumlah);
+            }
         };
 
-
         $penjualan->tampung_bayar()->create([
-            'total' => $total_harga,
-            'terima' => $request->total_diterima,
-            'kembali' => (int) $request->total_diterima - $total_harga
+            'total' => $total_bayar,
+            'terima' => (int) $request->total_diterima,
+            'kembali' => (int) $request->total_diterima - $total_bayar
         ]);
 
         return response()->json([

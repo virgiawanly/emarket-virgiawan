@@ -81,7 +81,8 @@
                             <div class="col-md-8">
                                 <div class="card">
                                     <div class="card-body bg-dark text-white text-center">
-                                        <h4 class="display-4 total-rupiah">Rp. 0</h4>
+                                        <h4 class="display-4 total-rupiah" style="font-family: consolas, sans-serif;">Rp. 0
+                                        </h4>
                                     </div>
                                     <div class="card-footer" style="background-color: #fcfcfc">
                                         <span class="total-terbilang">Lima Puluh Juta Rupiah</span>
@@ -94,8 +95,8 @@
                                         <label for="tglBayar" class="label">Tgl</label>
                                     </div>
                                     <div class="col-sm-10">
-                                        <input type="date" disabled id="tglBayar" placeholder="Rp "
-                                            class="form-control" value="{{date('Y-m-d')}}">
+                                        <input type="date" disabled id="tglBayar" placeholder="Rp " class="form-control"
+                                            value="{{ date('Y-m-d') }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
@@ -176,7 +177,8 @@
         // Fungsi untuk mengupdate total harga
         const updateTotalHarga = function() {
             setTimeout(() => {
-                let harga_beli = $('input[name="harga_beli[]"]').map((i, input) => parseInt($(input).val() || 0))
+                let harga_beli = $('input[name="harga_beli[]"]').map((i, input) => parseInt($(input).val() ||
+                        0))
                     .get();
                 let jumlah = $('input[name="jumlah[]"]').map((i, input) => parseInt($(input).val() || 0)).get();
                 let subtotal = harga_beli.map((harga, i) => harga * jumlah[i]);
