@@ -187,7 +187,6 @@
                     .closest("tr")
                     .find(".display-subtotal")
                     .text(formatter.format(subtotal));
-                hitungKembalian();
                 updateTotalHarga();
             });
         }
@@ -213,6 +212,7 @@
                 $(".total-rupiah").text("Rp " + formatter.format(total));
                 $("input#totalHarga").val("Rp " + formatter.format(total));
                 $(".total-terbilang").text(terbilang(total));
+                hitungKembalian();
             });
         }
 
@@ -307,7 +307,7 @@
                 <input type="hidden" name="barang_id[]" value="${barang_id}">`;
                 let nama_barang = row.find("td").eq(3).text();
                 let harga_jual = parseInt(row.find("td").eq(4).text());
-                let diskon = parseInt(row.find("td").eq(5).text());
+                let diskon = parseInt(row.find("td").eq(5).text()) || 0;
                 let harga_diskon = Math.round(harga_jual - (diskon / 100 * harga_jual));
 
                 let displayHarga = `Rp <span class="display-harga">${formatter.format(harga_jual)}</span>
@@ -394,9 +394,16 @@
                     Swal.fire({
                         icon: "success",
                         title: res.message,
-                        showConfirmButton: false,
-                        timer: 2000,
-                    }).then(() => {
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="fas fa-print mr-1"></i> Cetak Struk',
+                        cancelButtonText: '<i class="fas fa-plus mr-1"></i> Transaksi Baru',
+                        confirmButtonColor: '#6777EF',
+                        cancelButtonColor: '#47C363',
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                            print_faktur('/transaksi/cetak_struk', 'Cetak struk');
+                        }
                         location.reload();
                     });
                 })
@@ -410,5 +417,36 @@
                     return;
                 });
         });
+    </script>
+
+    <script>
+        document.cookie = "innerHeight=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        function print_faktur(url, title) {
+            popupCenter(url, title, 625, 500);
+        }
+
+        const popupCenter = function(url, title, w, h) {
+            const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
+            const dualScreenTop  = window.screenTop  !==  undefined ? window.screenTop  : window.screenY;
+
+            const width  = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            const systemZoom = width / window.screen.availWidth;
+            const left       = (width - w) / 2 / systemZoom + dualScreenLeft
+            const top        = (height - h) / 2 / systemZoom + dualScreenTop
+            const newWindow  = window.open(url, title,
+            `
+                scrollbars=yes,
+                width  = ${w / systemZoom},
+                height = ${h / systemZoom},
+                top    = ${top},
+                left   = ${left}
+            `
+            );
+
+            if (window.focus) newWindow.focus();
+        }
     </script>
 @endpush

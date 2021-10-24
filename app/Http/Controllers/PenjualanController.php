@@ -174,6 +174,8 @@ class PenjualanController extends Controller
             'kembali' => (int) $request->total_diterima - $total_bayar
         ]);
 
+        session(['penjualan_id' => $penjualan->id]);
+
         return response()->json([
             'message' => 'Transaksi Berhasil',
             'link_cetak_faktur' => '/'
@@ -223,5 +225,20 @@ class PenjualanController extends Controller
     public function destroy(Penjualan $penjualan)
     {
         //
+    }
+
+    /**
+     * Mencetak struk belanja.
+     *
+     */
+    public function cetak_struk()
+    {
+        $penjualan = Penjualan::with('detail', 'tampung_bayar', 'detail.barang')->find(session('penjualan_id'));
+        if(!$penjualan){
+            abort(404);
+        };
+        return view('admin.penjualan.struk_belanja', [
+            'penjualan' => $penjualan
+        ]);
     }
 }

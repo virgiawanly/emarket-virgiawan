@@ -16,6 +16,7 @@
                         <th>Jenis Produk</th>
                         <th>Harga Jual</th>
                         <th>Diskon</th>
+                        <th>Sisa Stok</th>
                         <th>Aksi</th>
                     </thead>
                     <tbody>
@@ -26,7 +27,8 @@
                             <td>{{$b->nama_barang}}</td>
                             <td>{{$b->produk->nama_produk}}</td>
                             <td>{{$b->harga_jual}}</td>
-                            <td>{{$b->diskon}}</td>
+                            <td>{{$b->diskon ? $b->diskon . '%' : '-'}}</td>
+                            <td>{{$b->stok}}</td>
                             <td>
                                 <button class="button-pilih-barang btn btn-sm btn-success" data-barang-id="{{$b->id}}"><i class="fas fa-check-circle"></i> Pilih</button>
                             </td>

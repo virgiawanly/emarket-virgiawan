@@ -42,9 +42,10 @@ Route::resource('/pembelian', PembelianController::class)->except('create', 'edi
 
 Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
 Route::get('/penjualan/detail/data/{id}', [PenjualanController::class, 'detail_data'])->name('penjualan.detail');
-Route::resource('/penjualan', PenjualanController::class)->except('create', 'edit');
+Route::resource('/penjualan', PenjualanController::class)->except('create', 'show', 'edit', 'update', 'destroy');
 
 Route::get('/transaksi', [PenjualanController::class, 'create'])->name('penjualan.create');
+Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk'])->name('penjualan.cetak_struk');
 
 Route::get('/tentang-aplikasi', function(){
     return view('admin.tentang-aplikasi');
