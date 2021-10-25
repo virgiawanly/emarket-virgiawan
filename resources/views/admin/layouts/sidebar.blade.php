@@ -32,6 +32,11 @@
             <li class="{{ is_active_link('transaksi', 'transaksi/*') }}"><a class="nav-link" href="/transaksi"><i class="fas fa-cash-register"></i>
                     <span>Transaksi Baru</span></a></li>
 
+            <!-- Report Area -->
+            <li class="menu-header">Report</li>
+            <li class="{{ is_active_link('laporan/pendapatan') }}"><a class="nav-link" href="/laporan/pendapatan"><i class="fas fa-chart-bar"></i>
+                <span>Laporan Pendapatan</span></a></li>
+
             <!-- Utility Area -->
             <li class="menu-header">Utilitas</li>
             <li><a class="nav-link" href="/"><i class="fas fa-users"></i>

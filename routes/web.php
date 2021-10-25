@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PembelianController;
@@ -46,6 +47,10 @@ Route::resource('/penjualan', PenjualanController::class)->except('create', 'sho
 
 Route::get('/transaksi', [PenjualanController::class, 'create'])->name('penjualan.create');
 Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk'])->name('penjualan.cetak_struk');
+
+Route::get('/laporan/pendapatan', [LaporanController::class, 'pendapatan'])->name('laporan.pendapatan');
+Route::get('/laporan/pendapatan/export/pdf/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'exportPendapatanPDF'])->name('laporan.pdf_pendapatan');
+Route::get('/laporan/pendapatan/data/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'dataPendapatan'])->name('laporan.data_pendapatan');
 
 Route::get('/tentang-aplikasi', function(){
     return view('admin.tentang-aplikasi');
