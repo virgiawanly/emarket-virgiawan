@@ -7,6 +7,7 @@ use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +52,10 @@ Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk']
 Route::get('/laporan/pendapatan', [LaporanController::class, 'pendapatan'])->name('laporan.pendapatan');
 Route::get('/laporan/pendapatan/export/pdf/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'exportPendapatanPDF'])->name('laporan.pdf_pendapatan');
 Route::get('/laporan/pendapatan/data/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'dataPendapatan'])->name('laporan.data_pendapatan');
+
+Route::get('/users/data', [UserController::class, 'all_user'])->name('user.all_user');
+Route::get('/users/register', [UserController::class, 'register'])->name('user.register');
+Route::resource('/users', UserController::class)->except('create', 'edit');
 
 Route::get('/tentang-aplikasi', function(){
     return view('admin.tentang-aplikasi');

@@ -39,8 +39,8 @@
 
             <!-- Utility Area -->
             <li class="menu-header">Utilitas</li>
-            <li><a class="nav-link" href="/"><i class="fas fa-users"></i>
-                    <span>Staff</span></a></li>
+            <li><a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-users"></i>
+                    <span>Users</span></a></li>
             <li><a class="nav-link" href="/"><i class="fas fa-address-card"></i>
                     <span>Profile</span></a></li>
             <li><a class="nav-link" href="/"><i class="fas fa-cog"></i>
