@@ -234,7 +234,7 @@
                     'input[name="jumlah[]"]');
 
                 input_jumlah.val(function() {
-                    return parseInt($(this).val()) + 1;
+                    return parseInt($(this).val() || 0) + 1;
                 });
 
                 input_jumlah.trigger('change');

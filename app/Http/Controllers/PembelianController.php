@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Pemasok;
 use App\Models\Pembelian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class PembelianController extends Controller
@@ -98,7 +99,7 @@ class PembelianController extends Controller
         $kode_masuk = Pembelian::buat_kode_pembelian();
         $tanggal_masuk = date('Y-m-d');
         $pemasok_id = $request->pemasok_id;
-        $user_id = 1;
+        $user_id = Auth::id();
         $arr_jumlah = $request->jumlah;
         $arr_barang_id = $request->barang_id;
         $arr_harga_beli = $request->harga_beli;

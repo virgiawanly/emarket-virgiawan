@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PelangganController;
@@ -21,42 +22,59 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.dashboard');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
-Route::resource('/produk', ProdukController::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
-Route::get('/barang/data', [BarangController::class, 'data'])->name('barang.data');
-Route::resource('/barang', BarangController::class);
+    Route::middleware('level:2')->group(function () {
+        Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
+        Route::resource('/produk', ProdukController::class);
 
-Route::get('/pelanggan/data', [PelangganController::class, 'data'])->name('pelanggan.data');
-Route::resource('/pelanggan', PelangganController::class);
+        Route::get('/barang/data', [BarangController::class, 'data'])->name('barang.data');
+        Route::resource('/barang', BarangController::class);
 
-Route::get('/pemasok/data', [PemasokController::class, 'data'])->name('pemasok.data');
-Route::resource('/pemasok', PemasokController::class);
+        Route::get('/pelanggan/data', [PelangganController::class, 'data'])->name('pelanggan.data');
+        Route::resource('/pelanggan', PelangganController::class);
 
-Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
-Route::get('/pembelian/detail/data/{id}', [PembelianController::class, 'detail_data'])->name('pembelian.detail');
-Route::get('/pembelian/transaksi-baru', [PembelianController::class, 'create'])->name('pembelian.create');
-Route::resource('/pembelian', PembelianController::class)->except('create', 'edit');
+        Route::get('/pemasok/data', [PemasokController::class, 'data'])->name('pemasok.data');
+        Route::resource('/pemasok', PemasokController::class);
+    });
 
-Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
-Route::get('/penjualan/detail/data/{id}', [PenjualanController::class, 'detail_data'])->name('penjualan.detail');
-Route::resource('/penjualan', PenjualanController::class)->except('create', 'show', 'edit', 'update', 'destroy');
+    Route::middleware('level:3')->group(function () {
+        Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+        Route::get('/pembelian/detail/data/{id}', [PembelianController::class, 'detail_data'])->name('pembelian.detail');
+        Route::get('/pembelian/transaksi-baru', [PembelianController::class, 'create'])->name('pembelian.create');
+        Route::resource('/pembelian', PembelianController::class)->except('create', 'edit');
 
-Route::get('/transaksi', [PenjualanController::class, 'create'])->name('penjualan.create');
-Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk'])->name('penjualan.cetak_struk');
+        Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
+        Route::get('/penjualan/detail/data/{id}', [PenjualanController::class, 'detail_data'])->name('penjualan.detail');
+        Route::resource('/penjualan', PenjualanController::class)->except('create', 'show', 'edit', 'update', 'destroy');
 
-Route::get('/laporan/pendapatan', [LaporanController::class, 'pendapatan'])->name('laporan.pendapatan');
-Route::get('/laporan/pendapatan/export/pdf/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'exportPendapatanPDF'])->name('laporan.pdf_pendapatan');
-Route::get('/laporan/pendapatan/data/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'dataPendapatan'])->name('laporan.data_pendapatan');
+        Route::get('/transaksi', [PenjualanController::class, 'create'])->name('penjualan.create');
+        Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk'])->name('penjualan.cetak_struk');
+    });
 
-Route::get('/users/data', [UserController::class, 'all_user'])->name('user.all_user');
-Route::get('/users/register', [UserController::class, 'register'])->name('user.register');
-Route::resource('/users', UserController::class)->except('create', 'edit');
+    Route::middleware('level:1,3')->group(function () {
+        Route::get('/laporan/pendapatan', [LaporanController::class, 'pendapatan'])->name('laporan.pendapatan');
+        Route::get('/laporan/pendapatan/export/pdf/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'exportPendapatanPDF'])->name('laporan.pdf_pendapatan');
+        Route::get('/laporan/pendapatan/data/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'dataPendapatan'])->name('laporan.data_pendapatan');
+    });
 
-Route::get('/tentang-aplikasi', function(){
-    return view('admin.tentang-aplikasi');
+    Route::middleware('level:1')->group(function () {
+        Route::get('/users/data', [UserController::class, 'all_user'])->name('user.all_user');
+        Route::get('/users/register', [UserController::class, 'register'])->name('user.register');
+        Route::resource('/users', UserController::class)->except('create', 'edit');
+    });
+
+    Route::get('/tentang-aplikasi', function () {
+        return view('admin.tentang-aplikasi');
+    });
+
+    Route::get('/logout', [AuthController::class, 'logout']);
 });

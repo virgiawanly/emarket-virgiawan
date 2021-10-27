@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Pelanggan;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class PenjualanController extends Controller
@@ -116,7 +117,7 @@ class PenjualanController extends Controller
 
         $no_faktur = Penjualan::buat_no_faktur();
         $tgl_faktur = date('Y-m-d');
-        $user_id = 1;
+        $user_id = Auth::id();
         $arr_jumlah = $request->jumlah;
         $arr_diskon = $request->diskon;
         $arr_barang_id = $request->barang_id;
