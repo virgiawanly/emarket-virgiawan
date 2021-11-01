@@ -13,13 +13,13 @@
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 @auth
                     <img alt="image" src="{{ Auth::user()->get_photo() }}"
-                        class="rounded-circle mr-1">
+                        class="rounded-circle mr-1" style="width:30px;height: 30px;object-fit: cover">
                     <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::user()->name }}</div>
                 @endauth
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title">Login 5 menit lalu</div>
-                <a href="features-profile.html" class="dropdown-item has-icon">
+                <a href="/profile" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profil Saya
                 </a>
                 <a href="features-settings.html" class="dropdown-item has-icon">

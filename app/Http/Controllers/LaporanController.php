@@ -27,8 +27,8 @@ class LaporanController extends Controller
             $tanggal = $tgl_awal;
             $tgl_awal = date('Y-m-d', strtotime("+1 day", strtotime($tgl_awal)));
 
-            $total_penjualan = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('total_bayar');
-            $total_pembelian = Pembelian::where('created_at', 'LIKE', "%$tanggal%")->sum('total');
+            $total_penjualan = Penjualan::where('tgl_faktur', 'LIKE', "%$tanggal%")->sum('total_bayar');
+            $total_pembelian = Pembelian::where('tanggal_masuk', 'LIKE', "%$tanggal%")->sum('total');
 
             $pendapatan = $total_penjualan - $total_pembelian;
             $total_pendapatan += $pendapatan;

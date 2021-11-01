@@ -268,154 +268,156 @@
                 searching: false,
                 info: false,
             });
-        });
 
-        // Event ketika button pilih barang di klik
-        $("#tablePilihBarang").on("click", ".button-pilih-barang", function() {
-            let tbListBarang = $("#tableListBarang");
-            let barang_id = $(this).data("barang-id");
+            // Event ketika button pilih barang di klik
+            $("#tablePilihBarang").on("click", ".button-pilih-barang", function() {
+                let tbListBarang = $("#tableListBarang");
+                let barang_id = $(this).data("barang-id");
 
-            let arr_barang_id = tbListBarang
-                .find("tbody tr")
-                .map(function(i, row) {
-                    return (
-                        parseInt(
-                            $(row).find('input[name="barang_id[]"]').eq(0).val()
-                        ) || null
-                    );
-                })
-                .get();
+                let arr_barang_id = tbListBarang
+                    .find("tbody tr")
+                    .map(function(i, row) {
+                        return (
+                            parseInt(
+                                $(row).find('input[name="barang_id[]"]').eq(0).val()
+                            ) || null
+                        );
+                    })
+                    .get();
 
-            // Cek apakah sudah ada barang dengan id yang sama
-            if (arr_barang_id.some((id) => barang_id == id)) {
-                // Jika Ya, update jumlah barang
-                let input_jumlah = $(
-                        `input[name="barang_id[]"][value="${barang_id}"]`
-                    )
-                    .closest("tr")
-                    .find('input[name="jumlah[]"]');
+                // Cek apakah sudah ada barang dengan id yang sama
+                if (arr_barang_id.some((id) => barang_id == id)) {
+                    // Jika Ya, update jumlah barang
+                    let input_jumlah = $(
+                            `input[name="barang_id[]"][value="${barang_id}"]`
+                        )
+                        .closest("tr")
+                        .find('input[name="jumlah[]"]');
 
-                input_jumlah.val(function() {
-                    return parseInt($(this).val() || 0) + 1;
-                });
+                    input_jumlah.val(function() {
+                        return parseInt($(this).val() || 0) + 1;
+                    });
 
-                input_jumlah.trigger("change");
-            } else {
-                // Jika Tidak, buat row baru
-                let row = $(this).closest("tr");
-                let id_kode_barang = `<span class="kode-barang">${row.find("td").eq(2).text()}</span>
+                    input_jumlah.trigger("change");
+                } else {
+                    // Jika Tidak, buat row baru
+                    let row = $(this).closest("tr");
+                    let id_kode_barang = `<span class="kode-barang">${row.find("td").eq(2).text()}</span>
                 <input type="hidden" name="barang_id[]" value="${barang_id}">`;
-                let nama_barang = row.find("td").eq(3).text();
-                let harga_jual = parseInt(row.find("td").eq(4).text());
-                let diskon = parseInt(row.find("td").eq(5).text()) || 0;
-                let harga_diskon = Math.round(harga_jual - (diskon / 100 * harga_jual));
+                    let nama_barang = row.find("td").eq(3).text();
+                    let harga_jual = parseInt(row.find("td").eq(4).text());
+                    let diskon = parseInt(row.find("td").eq(5).text()) || 0;
+                    let harga_diskon = Math.round(harga_jual - (diskon / 100 * harga_jual));
 
-                let displayHarga = `Rp <span class="display-harga">${formatter.format(harga_jual)}</span>
+                    let displayHarga = `Rp <span class="display-harga">${formatter.format(harga_jual)}</span>
                 <input type="hidden" disabled class="form-control" name="harga_jual[]" value="${harga_jual}">`;
-                let inputJumlah = `<input type="number" class="form-control" name="jumlah[]" value="1" min="1">`;
-                let inputDiskon =
-                    `<input type="number" class="form-control" name="diskon[]" value="${diskon}" min="0" max="100">`;
-                let displaySubtotal = `Rp <span class="display-subtotal">${formatter.format(harga_diskon)}</span>`;
-                let buttonHapus =
-                    `<button type="button" class="button-hapus-barang btn btn-sm btn-danger" title="Hapus Barang"><i class="fas fa-trash"></i></button>`;
-                let rowNumber = arr_barang_id.length + 1;
+                    let inputJumlah =
+                        `<input type="number" class="form-control" name="jumlah[]" value="1" min="1">`;
+                    let inputDiskon =
+                        `<input type="number" class="form-control" name="diskon[]" value="${diskon}" min="0" max="100">`;
+                    let displaySubtotal =
+                        `Rp <span class="display-subtotal">${formatter.format(harga_diskon)}</span>`;
+                    let buttonHapus =
+                        `<button type="button" class="button-hapus-barang btn btn-sm btn-danger" title="Hapus Barang"><i class="fas fa-trash"></i></button>`;
+                    let rowNumber = arr_barang_id.length + 1;
 
-                tableListBarang.row
-                    .add([
-                        rowNumber,
-                        id_kode_barang,
-                        nama_barang,
-                        displayHarga,
-                        inputJumlah,
-                        inputDiskon,
-                        displaySubtotal,
-                        buttonHapus,
-                    ])
-                    .draw();
-            }
+                    tableListBarang.row
+                        .add([
+                            rowNumber,
+                            id_kode_barang,
+                            nama_barang,
+                            displayHarga,
+                            inputJumlah,
+                            inputDiskon,
+                            displaySubtotal,
+                            buttonHapus,
+                        ])
+                        .draw();
+                }
 
-            updateTotalHarga();
-            $("#modalPilihBarang").modal("hide");
-        });
+                updateTotalHarga();
+                $("#modalPilihBarang").modal("hide");
+            });
 
-        // Event ketika button pilih pelanggan di klik : update input kode pelanggan
-        $("#tablePilihPelanggan").on("click", ".button-pilih-pelanggan", function() {
-            let kode_pelanggan = $(this).data('kode-pelanggan');
-            $('input[name="kode_pelanggan"]').val(kode_pelanggan);
-            $("#modalPilihPelanggan").modal("hide");
-        });
+            // Event ketika button pilih pelanggan di klik : update input kode pelanggan
+            $("#tablePilihPelanggan").on("click", ".button-pilih-pelanggan", function() {
+                let kode_pelanggan = $(this).data('kode-pelanggan');
+                $('input[name="kode_pelanggan"]').val(kode_pelanggan);
+                $("#modalPilihPelanggan").modal("hide");
+            });
 
-        // Event ketika menghapus barang dari list
-        $("#tableListBarang").on("click", ".button-hapus-barang", function() {
-            tableListBarang.row($(this).parents("tr")).remove().draw();
-            updateTotalHarga();
-        });
+            // Event ketika menghapus barang dari list
+            $("#tableListBarang").on("click", ".button-hapus-barang", function() {
+                tableListBarang.row($(this).parents("tr")).remove().draw();
+                updateTotalHarga();
+            });
 
-        // Event ketika input jumlah diubah : update sub total
-        $("#tableListBarang").on(
-            "keydown change",
-            'input[name="jumlah[]"]',
-            updateSubTotal
-        );
+            // Event ketika input jumlah diubah : update sub total
+            $("#tableListBarang").on(
+                "keydown change",
+                'input[name="jumlah[]"]',
+                updateSubTotal
+            );
 
-        // Event ketika input harga jual diubah : update sub total
-        $("#tableListBarang").on(
-            "keydown change",
-            'input[name="harga_jual[]"]',
-            updateSubTotal
-        );
+            // Event ketika input harga jual diubah : update sub total
+            $("#tableListBarang").on(
+                "keydown change",
+                'input[name="harga_jual[]"]',
+                updateSubTotal
+            );
 
-        // Event ketika input diskon diubah : update sub total
-        $("#tableListBarang").on(
-            "keydown change",
-            'input[name="diskon[]"]',
-            updateSubTotal
-        );
-        // Event ketika input total uang diterima diubah : update kembalian
-        $('input[name="total_diterima"]').on(
-            "keydown change",
-            hitungKembalian
-        );
+            // Event ketika input diskon diubah : update sub total
+            $("#tableListBarang").on(
+                "keydown change",
+                'input[name="diskon[]"]',
+                updateSubTotal
+            );
+            // Event ketika input total uang diterima diubah : update kembalian
+            $('input[name="total_diterima"]').on(
+                "keydown change",
+                hitungKembalian
+            );
 
-        // Event ketika input cari barang diubah : buka modal
-        $("input.cari-barang").on("keydown", function() {
-            event.preventDefault();
-            $("#modalPilihBarang").modal("show");
-            $(this).val("");
-        });
+            // Event ketika input cari barang diubah : buka modal
+            $("input.cari-barang").on("keydown", function() {
+                event.preventDefault();
+                $("#modalPilihBarang").modal("show");
+                $(this).val("");
+            });
 
-        // Event ketika form di submit
-        $("form#formPenjualan").on("submit", function() {
-            event.preventDefault();
-            let url = $(this).attr("action");
-            let formData = $(this).serialize();
-            $.post(url, formData)
-                .done((res) => {
-                    Swal.fire({
-                        icon: "success",
-                        title: res.message,
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        confirmButtonText: '<i class="fas fa-print mr-1"></i> Cetak Struk',
-                        cancelButtonText: '<i class="fas fa-plus mr-1"></i> Transaksi Baru',
-                        confirmButtonColor: '#6777EF',
-                        cancelButtonColor: '#47C363',
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                            print_faktur('/transaksi/cetak_struk', 'Cetak struk');
-                        }
-                        location.reload();
+            // Event ketika form di submit
+            $("form#formPenjualan").on("submit", function() {
+                event.preventDefault();
+                let url = $(this).attr("action");
+                let formData = $(this).serialize();
+                $.post(url, formData)
+                    .done((res) => {
+                        Swal.fire({
+                            icon: "success",
+                            title: res.message,
+                            showConfirmButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="fas fa-print mr-1"></i> Cetak Struk',
+                            cancelButtonText: '<i class="fas fa-plus mr-1"></i> Transaksi Baru',
+                            confirmButtonColor: '#6777EF',
+                            cancelButtonColor: '#47C363',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                print_faktur('/transaksi/cetak_struk', 'Cetak struk');
+                            }
+                            location.reload();
+                        });
+                    })
+                    .fail((err) => {
+                        console.log(err.responseJSON);
+                        toaster.fire({
+                            icon: "error",
+                            title: "Data gagal disimpan",
+                        });
+
+                        return;
                     });
-                })
-                .fail((err) => {
-                    console.log(err.responseJSON);
-                    toaster.fire({
-                        icon: "error",
-                        title: "Data gagal disimpan",
-                    });
-
-                    return;
-                });
+            });
         });
     </script>
 
@@ -427,17 +429,19 @@
         }
 
         const popupCenter = function(url, title, w, h) {
-            const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
-            const dualScreenTop  = window.screenTop  !==  undefined ? window.screenTop  : window.screenY;
+            const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+            const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
 
-            const width  = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-            const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+            const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document
+                .documentElement.clientWidth : screen.width;
+            const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document
+                .documentElement.clientHeight : screen.height;
 
             const systemZoom = width / window.screen.availWidth;
-            const left       = (width - w) / 2 / systemZoom + dualScreenLeft
-            const top        = (height - h) / 2 / systemZoom + dualScreenTop
-            const newWindow  = window.open(url, title,
-            `
+            const left = (width - w) / 2 / systemZoom + dualScreenLeft
+            const top = (height - h) / 2 / systemZoom + dualScreenTop
+            const newWindow = window.open(url, title,
+                `
                 scrollbars=yes,
                 width  = ${w / systemZoom},
                 height = ${h / systemZoom},

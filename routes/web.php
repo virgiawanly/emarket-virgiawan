@@ -76,5 +76,8 @@ Route::middleware('auth')->group(function () {
         return view('admin.tentang-aplikasi');
     });
 
+    Route::get('/profile', [UserController::class, 'showProfile']);
+    Route::post('/profile', [UserController::class, 'updateProfile']);
+
     Route::get('/logout', [AuthController::class, 'logout']);
 });

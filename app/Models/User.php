@@ -69,4 +69,20 @@ class User extends Authenticatable
     public function canDelete(){
         return !$this->pembelian()->exists() && !$this->penjualan()->exists();
     }
+
+    public function get_role(){
+        $role = '';
+        switch($this->level) {
+            case 1 :
+                $role = 'Admin';
+                break;
+            case 2 :
+                $role = 'EDP';
+                break;
+            default :
+                $role = 'Operator';
+                break;
+        }
+        return $role;
+    }
 }

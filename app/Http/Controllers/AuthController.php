@@ -22,7 +22,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return redirect()->back()->withErrors([
+        return redirect()->back()->withInput()->withErrors([
             'email' => 'Username atau password salah'
         ]);
     }

@@ -30,7 +30,11 @@
                             <td>{{$b->diskon ? $b->diskon . '%' : '-'}}</td>
                             <td>{{$b->stok}}</td>
                             <td>
-                                <button class="button-pilih-barang btn btn-sm btn-success" data-barang-id="{{$b->id}}"><i class="fas fa-check-circle"></i> Pilih</button>
+                                @if ($b->stok > 0)
+                                    <button class="button-pilih-barang btn btn-sm btn-success" data-barang-id="{{$b->id}}"><i class="fas fa-check-circle"></i> Pilih</button>
+                                @else
+                                    <button class="btn btn-sm btn-secondary"><i class="fas fa-ban mr-1"></i>Kosong</button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

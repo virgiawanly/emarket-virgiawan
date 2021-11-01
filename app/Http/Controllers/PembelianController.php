@@ -93,11 +93,12 @@ class PembelianController extends Controller
     {
         $request->validate([
             'pemasok_id' => 'required|exists:pemasok,id',
-            'barang_id' => 'required|array'
+            'barang_id' => 'required|array',
+            'tanggal_masuk' => 'required'
         ]);
 
         $kode_masuk = Pembelian::buat_kode_pembelian();
-        $tanggal_masuk = date('Y-m-d');
+        $tanggal_masuk = $request->tanggal_masuk;
         $pemasok_id = $request->pemasok_id;
         $user_id = Auth::id();
         $arr_jumlah = $request->jumlah;

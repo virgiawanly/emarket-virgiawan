@@ -19,9 +19,37 @@
                     <div class="card-body pb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <button class="btn btn-primary my-3" type="button" data-toggle="modal"
-                                    data-target="#modalPilihPemasok"><i class="fas fa-truck mr-1"></i> Pilih
-                                    Pemasok</button>
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <label for="namaPemasok">Pemasok</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input type="text" disabled id="namaPemasok" placeholder="-"
+                                                class="form-control">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-toggle="modal"
+                                                    data-target="#modalPilihPemasok"><i class="fas fa-arrow-right mr-1"></i>
+                                                    Pilih</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <label for="tglMasuk">Tanggal</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="date" id="tglMasuk" name="tanggal_masuk" class="form-control"
+                                            value="{{ date('Y-m-d') }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
                                 <table class="info-pemasok table table-sm table-borderless">
                                     <tr>
                                         <th style="width: 200px">Nama Pemasok</th>
@@ -46,7 +74,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="form-group row mt-4">
                             <div class="col-md-2">
                                 <label for="cariBarang">Kode Barang</label>
@@ -90,23 +117,9 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group row mb-3">
-                                    <div class="col-sm-2">
-                                        <label for="tglBayar" class="label">Tgl</label>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <input type="date" disabled id="tglBayar" placeholder="Rp " class="form-control"
-                                            value="{{ date('Y-m-d') }}">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <div class="col-sm-2">
-                                        <label for="totalBayar" class="label">Total</label>
-                                    </div>
-                                    <div class="col-sm-10">
-                                        <input type="text" readonly id="totalBayar" placeholder="Rp "
-                                            class="form-control">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="totalBayar" class="label">Total</label>
+                                    <input type="text" readonly id="totalBayar" placeholder="Rp " class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -279,6 +292,7 @@
 
             let pemasok_id = $(this).data('pemasok-id');
             $('input[name="pemasok_id"]').val(pemasok_id);
+            $('input#namaPemasok').val(nama);
 
             $('#modalPilihPemasok').modal('hide');
         });

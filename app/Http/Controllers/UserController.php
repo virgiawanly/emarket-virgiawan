@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -180,5 +183,45 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User tidak dapat dihapus'
         ], 422);
+    }
+
+    public function showProfile(){
+        return view('admin.users.profile');
+    }
+
+    public function updateProfile(Request $request){
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $user->name = $request->name;
+
+        if($request->has('password') && $request->password != ''){
+            $request->validate([
+                'password' => 'required|confirmed',
+                'password_confirmation' => 'required',
+                'old_password' => 'required'
+            ]);
+
+            if(Hash::check($request->old_password, $user->password)){
+                $user->password = bcrypt($request->password);
+            } else {
+                return redirect()->back()->withErrors([
+                    'old_password' => 'Password salah'
+                ]);
+            }
+        }
+
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('profile');
+            if ($user->photo && Storage::exists($user->photo)) Storage::delete($user->photo);
+            $user->photo = $photoPath;
+        }
+
+        $user->update();
+
+        return redirect()->back();
     }
 }
