@@ -112,6 +112,7 @@
             clearErrors();
             let url = $('#modalForm form').attr('action');
             let formData = $('#modalForm form').serialize();
+            $('.modal-submit-button').attr('disabled', true);
             $.post(url, formData)
                 .done((res) => {
                     $('#modalForm').modal('hide');
@@ -134,7 +135,9 @@
                     });
 
                     return;
-                })
+                }).always(() => {
+                    $('.modal-submit-button').attr('disabled', false);
+                });
         })
 
         const registerUser = (url) => {
@@ -165,6 +168,8 @@
                 $('#modalForm [name=name]').focus();
             });
 
+            $('#modalForm input').attr('disabled', true);
+
             $.get(url)
                 .done((res) => {
                     $('#modalForm [name=name]').val(res.name);
@@ -174,6 +179,8 @@
                 .fail((errors) => {
                     alert('Tidak dapat menampilkan data');
                     return;
+                }).always(() => {
+                    $('#modalForm input').attr('disabled', false);
                 });
         }
 

@@ -54,6 +54,7 @@
         .select2-selection {
             padding-top: 6px !important;
         }
+
     </style>
 @endpush
 
@@ -136,6 +137,7 @@
             clearErrors();
             let url = $('#modalForm form').attr('action');
             let formData = $('#modalForm form').serialize();
+            $('.modal-submit-button').attr('disabled', true);
             $.post(url, formData)
                 .done((res) => {
                     $('#modalForm').modal('hide');
@@ -158,7 +160,9 @@
                     });
 
                     return;
-                })
+                }).always(() => {
+                    $('.modal-submit-button').attr('disabled', false);
+                });
         })
 
         const tambahBarang = (url) => {
@@ -190,6 +194,9 @@
                 $('#modalForm [name=nama_produk]').focus();
             });
 
+            $('#modalForm input').attr('disabled', true);
+            $('#modalForm select').attr('disabled', true);
+
             $.get(url)
                 .done((res) => {
                     $('#modalForm [name=produk_id]').val(res.produk_id);
@@ -203,6 +210,9 @@
                 .fail((errors) => {
                     alert('Tidak dapat menampilkan data');
                     return;
+                }).always(() => {
+                    $('#modalForm input').attr('disabled', false);
+                    $('#modalForm select').attr('disabled', false);
                 });
         }
 

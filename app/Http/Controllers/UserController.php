@@ -63,16 +63,6 @@ class UserController extends Controller
     }
 
     /**
-     * Register user baru
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function register()
-    {
-        return view('admin.users.register');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

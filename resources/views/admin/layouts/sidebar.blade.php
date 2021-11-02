@@ -9,7 +9,7 @@
         <ul class="sidebar-menu">
             @can('admin')
                 <!-- Dashboard -->
-                <li class="menu-header">Dashboard</li>
+                <li class="menu-header">Menu</li>
                 <li class="{{ is_active_link('/') }}"><a class="nav-link" href="/"><i
                             class="fas fa-fire"></i><span>Dashboard</span></a></li>
             @endcan
@@ -46,24 +46,22 @@
             @endcan
 
             @if (Gate::check('admin') || Gate::check('operator'))
-                <!-- Report Area -->
-                <li class="menu-header">Report</li>
                 <li class="{{ is_active_link('laporan/pendapatan') }}"><a class="nav-link"
                         href="/laporan/pendapatan"><i class="fas fa-chart-bar"></i>
                         <span>Laporan Pendapatan</span></a></li>
             @endif
 
             @can('admin')
-                <!-- Utility Area -->
-                <li class="menu-header">Utilitas</li>
-                <li><a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-users"></i>
+                <li class="{{ is_active_link('users', 'users/*') }}"><a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-users"></i>
                         <span>Users</span></a></li>
-                <li><a class="nav-link" href="/"><i class="fas fa-cog"></i>
-                        <span>Pengaturan</span></a></li>
             @endcan
 
             <!-- Others -->
             <li class="menu-header">Lainnya</li>
+            @can('admin')
+                <li><a class="nav-link" href="/"><i class="fas fa-cog"></i>
+                        <span>Pengaturan</span></a></li>
+            @endcan
             <li class="{{ is_active_link('tentang-aplikasi') }}"><a class="nav-link"
                     href="/tentang-aplikasi"><i class="fas fa-info"></i>
                     <span>Tentang Aplikasi</span></a></li>

@@ -68,7 +68,6 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('level:1')->group(function () {
         Route::get('/users/data', [UserController::class, 'all_user'])->name('user.all_user');
-        Route::get('/users/register', [UserController::class, 'register'])->name('user.register');
         Route::resource('/users', UserController::class)->except('create', 'edit');
     });
 
