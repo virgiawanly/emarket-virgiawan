@@ -44,7 +44,7 @@
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="level" id="level1" value="2" checked>
-                                <label class="form-check-label" for="level1">ERD</label>
+                                <label class="form-check-label" for="level1">EDP</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="level" id="level2" value="3">

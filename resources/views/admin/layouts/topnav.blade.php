@@ -14,7 +14,7 @@
                 @auth
                     <img alt="image" src="{{ Auth::user()->get_photo() }}"
                         class="rounded-circle mr-1" style="width:30px;height: 30px;object-fit: cover">
-                    <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::user()->name }}</div>
+                    <div class="d-sm-none d-lg-inline-block">{{ Auth::user()->name }} - {{ Auth::user()->get_role() }}</div>
                 @endauth
             </a>
             <div class="dropdown-menu dropdown-menu-right">
