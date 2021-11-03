@@ -17,7 +17,7 @@
                             class="fas fa-plus-circle mr-2"></i><span>Tambah Pelanggan</span></button>
                 </div>
                 <div class="card-body">
-                    <table id="pelangganTable" class="table table-striped table-sm table-bordered">
+                    <table id="pelangganTable" class="table table-striped table-sm table-bordered" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>
@@ -45,6 +45,11 @@
 
 @endpush
 
+@push('head')
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" />
+@endpush
+
 @push('script')
 
     <!-- SweetAlert2 -->
@@ -54,6 +59,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
     </script>
 
     <script>

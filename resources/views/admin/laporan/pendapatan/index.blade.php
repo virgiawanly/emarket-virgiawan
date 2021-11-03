@@ -16,7 +16,7 @@
                 {{-- <div class="card-header py-3"><b>Tanggal : </b>
                     <span>{{ $tgl_awal ? date('d/m/Y', strtotime($tgl_awal)) : date('d/m/Y') }} s/d
                         {{ $tgl_akhir ? date('d/m/Y', strtotime($tgl_akhir)) : date('d/m/Y') }}</span></div> --}}
-                <div class="card-body table-responsive">
+                <div class="card-body">
                     <form action="{{ route('laporan.pendapatan') }}" method="get">
                         <div class="row">
                             <div class="col-md-8">
@@ -39,17 +39,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 text-right">
-                                <button type="submit" class="btn btn-info btn-xs btn-flat mr-2"><i
+                            <div class="col-md-4 text-md-right mb-md-0 mb-4">
+                                <button type="submit" class="btn btn-info btn-xs btn-flat"><i
                                         class="fa fa-exchange-alt"></i> Ubah
                                     Periode</button>
-                                <a href="{{ route('laporan.pdf_pendapatan', [$tgl_awal, $tgl_akhir]) }}" target="_blank"
-                                    class="btn btn-success btn-xs btn-flat"><i class="fa fa-print mr-1"></i>
-                                    Export PDF</a>
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-expanded="false"><i class="fa fa-upload mr-1"></i>Export
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href=""><i class="fa fa-table mr-2"></i> Excel</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('laporan.pdf_pendapatan', [$tgl_awal, $tgl_akhir]) }}"
+                                            target="_blank"><i class="fa fa-print mr-2"></i> PDF</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
-                    <table class="table table-sm table-stiped table-bordered">
+                    <table class="table table-sm table-stiped table-bordered" style="width: 100%">
                         <thead>
                             <th width="5%">No</th>
                             <th>Tanggal</th>
@@ -65,6 +73,11 @@
 
 @endsection
 
+@push('head')
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" />
+@endpush
+
 @push('script')
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
@@ -74,6 +87,10 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
     </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+    </script>
+
 
     <script>
         let table;
@@ -82,6 +99,7 @@
             table = $('.table').DataTable({
                 processing: true,
                 autoWidth: false,
+                responsive: true,
                 ajax: {
                     url: '{{ route('laporan.data_pendapatan', [$tgl_awal, $tgl_akhir]) }}',
                 },

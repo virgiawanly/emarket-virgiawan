@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/forgot-password', [AuthController::class, 'forgot_password']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/produk', ProdukController::class);
 
         Route::get('/barang/data', [BarangController::class, 'data'])->name('barang.data');
+        Route::put('/barang/update-tarik-barang/{barang}', [BarangController::class, 'updateTarikBarang'])->name('barang.tarikBarang');
         Route::resource('/barang', BarangController::class);
 
         Route::get('/pelanggan/data', [PelangganController::class, 'data'])->name('pelanggan.data');

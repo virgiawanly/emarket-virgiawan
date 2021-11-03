@@ -44,7 +44,7 @@ class LaporanController extends Controller
             } else if ($pendapatan < 0) {
                 $row['pendapatan'] = '<span class="text-danger">' . '-Rp ' . number_format(abs($pendapatan)) . '</span>';
             } else {
-                $row['pendapatan'] = "-";
+                $row['pendapatan'] = "";
             }
 
             $data[] = $row;

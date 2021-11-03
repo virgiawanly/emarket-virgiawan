@@ -27,13 +27,22 @@
                         <label for="satuan">Satuan</label>
                         <input type="text" name="satuan" id="satuan" class="form-control">
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="hargaJual">Harga Jual</label>
-                        <input type="number" name="harga_jual" id="hargaJual" class="form-control" autocomplete="off">
+                    <div class="form-group row mb-3">
+                        <div class="col-md-8">
+                            <label for="hargaJual">Harga Jual</label>
+                            <input type="number" name="harga_jual" id="hargaJual" class="form-control"
+                                autocomplete="off">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="diskon">Diskon</label>
+                            <input type="number" value="0" name="diskon" id="diskon" class="form-control"
+                                autocomplete="off">
+                        </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="diskon">Diskon</label>
-                        <input type="number" value="0" name="diskon" id="diskon" class="form-control" autocomplete="off">
+                        <label for="tglKadaluarsa">Tanggal Kadaluarsa</label>
+                        <input type="date" value="0" name="tgl_kadaluarsa" id="tglKadaluarsa" class="form-control"
+                            autocomplete="off">
                     </div>
                 </div>
                 <div class="modal-footer bg-whitesmoke br">

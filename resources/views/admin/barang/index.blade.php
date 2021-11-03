@@ -17,7 +17,7 @@
                             class="fas fa-plus-circle mr-2"></i><span>Tambah Barang</span></button>
                 </div>
                 <div class="card-body">
-                    <table id="barangTable" class="table table-striped table-sm table-bordered">
+                    <table id="barangTable" class="table table-striped table-sm table-bordered" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>
@@ -30,6 +30,9 @@
                                 <th>Diskon</th>
                                 <th>Satuan</th>
                                 <th>Stok</th>
+                                <th>Tanggal Kadaluarsa</th>
+                                <th>Status</th>
+                                <th>Tampilkan di Penjualan</th>
                                 <th><i class="fas fa-cog"></i></th>
                             </tr>
                         </thead>
@@ -50,6 +53,10 @@
 @push('head')
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" />
+
     <style>
         .select2-selection {
             padding-top: 6px !important;
@@ -67,6 +74,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
     </script>
 
     <!-- Select2 -->
@@ -109,6 +119,15 @@
                     },
                     {
                         data: 'stok'
+                    },
+                    {
+                        data: 'kadaluarsa'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'jual_barang'
                     },
                     {
                         data: 'action',
@@ -206,6 +225,7 @@
                     $('#modalForm [name=diskon]').val(res.diskon);
                     $('#modalForm [name=satuan]').val(res.satuan);
                     $('#modalForm [name=stok]').val(res.stok);
+                    $('#modalForm [name=tgl_kadaluarsa]').val(res.tgl_kadaluarsa);
                 })
                 .fail((errors) => {
                     alert('Tidak dapat menampilkan data');
@@ -261,6 +281,19 @@
                 }
                 parent.find('span.form-errors').text(errors[key][0]);
             }
+        }
+
+        const updateTarikBarang = function(el) {
+            let barang_id = $(el).data('barang-id');
+            let proses_ditarik = $(el).is(':checked') ? 0 : 1;
+            $(this).attr('disabled', true);
+            $.post(`/barang/update-tarik-barang/${barang_id}`, {
+                _method: 'put',
+                _token: $('[name=_token]').val(),
+                proses_ditarik: proses_ditarik
+            }).always(() => {
+                $(this).attr('disabled', false);
+            });
         }
 
         const clearErrors = () => {

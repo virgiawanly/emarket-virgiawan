@@ -1,10 +1,10 @@
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">E-Market</a>
+            <a href="index.html"><img src="{{ asset('img/logo.svg') }}" width="30px" alt=""><span class="ml-1">E-Market</span></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">EM</a>
+            <a href="index.html"><img src="{{ asset('img/logo.svg') }}" width="30px" alt=""></a>
         </div>
         <ul class="sidebar-menu">
             @can('admin')

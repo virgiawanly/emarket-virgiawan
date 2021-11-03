@@ -1,11 +1,11 @@
 @extends('admin.layouts.main')
 
 @section('content-header')
-    <h1>Pembelian Barang</h1>
+    <h1>Penjualan Barang</h1>
     <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/">Dashboard</a></div>
-        <div class="breadcrumb-item active"><a href="/pembelian">Pembelian</a></div>
-        <div class="breadcrumb-item">Pembelian Baru</div>
+        <div class="breadcrumb-item active"><a href="/penjualan">Penjualan</a></div>
+        <div class="breadcrumb-item">Penjualan Baru</div>
     </div>
 @endsection
 
@@ -33,7 +33,7 @@
                             </div>
                         </div>
 
-                        <table id="tableListBarang" class="table table-sm table-bordered">
+                        <table id="tableListBarang" class="table table-sm table-bordered" style="width: 100%">
                             <thead>
                                 <th>#</th>
                                 <th>Kode</th>
@@ -135,6 +135,11 @@
 
 @endpush
 
+@push('head')
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" />
+@endpush
+
 @push('script')
 
     <!-- SweetAlert2 -->
@@ -144,6 +149,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
     </script>
 
     <!-- Fungsi Terbilang -->

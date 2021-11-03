@@ -92,7 +92,7 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        $barang = Barang::with('produk')->get();
+        $barang = Barang::with('produk')->where('proses_ditarik', 0)->get();
         $pelanggan = Pelanggan::get();
         return view('admin.penjualan.penjualan_baru', [
             'barang' => $barang,

@@ -119,9 +119,13 @@ class PembelianController extends Controller
             'total' => $total_harga,
         ]);
 
+        if (!$pembelian) return response()->json([
+            'message' => 'Data gagal disimpan'
+        ], 422);
+
         foreach ($arr_barang_id as $index => $barang_id) {
-            $harga_beli = (int) $request->harga_beli[$index] ?? 0;
-            $jumlah = (int) $request->jumlah[$index] ?? 0;
+            $harga_beli = (int) $arr_harga_beli[$index] ?? 0;
+            $jumlah = (int) $arr_jumlah[$index] ?? 0;
 
             if ($jumlah !== 0) {
                 $detail = $pembelian->detail()->create([

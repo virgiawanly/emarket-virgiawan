@@ -13,7 +13,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="tablePenjualan" class="table table-striped table-sm table-bordered">
+                    <table id="tablePenjualan" class="table table-striped table-sm table-bordered" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>
@@ -43,6 +43,11 @@
 
 @endpush
 
+@push('head')
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" />
+@endpush
+
 @push('script')
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
@@ -51,6 +56,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
     </script>
 
     <script>
@@ -132,7 +140,7 @@
             });
         });
 
-        $('#tablePenjualan').on('click', '.button-lihat-detail', function(){
+        $('#tablePenjualan').on('click', '.button-lihat-detail', function() {
             let id_penjualan = $(this).data('penjualan-id');
             let no_faktur = $(this).data('no-faktur');
             $('span.no-faktur').text(no_faktur);

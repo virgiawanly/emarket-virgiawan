@@ -36,4 +36,8 @@ class AuthController extends Controller
 
         return redirect()->to('/');
     }
+
+    public function forgot_password(){
+        return view('forgot_password');
+    }
 }
