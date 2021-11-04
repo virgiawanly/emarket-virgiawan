@@ -1,10 +1,10 @@
 @extends('admin.layouts.main')
 
 @section('content-header')
-    <h1>Daftar Pembelian</h1>
+    <h1>Laporan Pembelian</h1>
     <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="/">Dashboard</a></div>
-        <div class="breadcrumb-item">Daftar Pembelian</div>
+        <div class="breadcrumb-item">Laporan Pembelian</div>
     </div>
 @endsection
 
@@ -12,10 +12,6 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <a class="btn btn-success" href="{{ route('pembelian.create') }}"><i
-                            class="fas fa-plus-circle mr-2"></i><span>Pembelian Baru</span></a>
-                </div>
                 <div class="card-body">
                     <table id="tablePembelian" class="table table-striped table-sm table-bordered" style="width: 100%">
                         <thead>

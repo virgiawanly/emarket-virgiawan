@@ -13,7 +13,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <button class="btn btn-success" onclick="tambahBarang('{{ route('barang.store') }}')"><i
+                    <button class="btn btn-success mr-2" onclick="tambahBarang('{{ route('barang.store') }}')"><i
                             class="fas fa-plus-circle mr-2"></i><span>Tambah Barang</span></button>
                 </div>
                 <div class="card-body">

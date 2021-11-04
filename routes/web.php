@@ -48,21 +48,25 @@ Route::middleware('auth')->group(function () {
         Route::resource('/pemasok', PemasokController::class);
     });
 
-    Route::middleware('level:3')->group(function () {
+    Route::middleware('level:1,3')->group(function () {
         Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
         Route::get('/pembelian/detail/data/{id}', [PembelianController::class, 'detail_data'])->name('pembelian.detail');
-        Route::get('/pembelian/transaksi-baru', [PembelianController::class, 'create'])->name('pembelian.create');
-        Route::resource('/pembelian', PembelianController::class)->except('create', 'edit');
 
         Route::get('/penjualan/data', [PenjualanController::class, 'data'])->name('penjualan.data');
         Route::get('/penjualan/detail/data/{id}', [PenjualanController::class, 'detail_data'])->name('penjualan.detail');
-        Route::resource('/penjualan', PenjualanController::class)->except('create', 'show', 'edit', 'update', 'destroy');
+    });
 
-        Route::get('/transaksi', [PenjualanController::class, 'create'])->name('penjualan.create');
+    Route::middleware('level:3')->group(function(){
+        Route::get('/transaksi/pembelian', [PembelianController::class, 'create'])->name('pembelian.create');
+        Route::post('/pembelian', [PembelianController::class, 'store'])->name('pembelian.store');
+        Route::get('/transaksi/penjualan', [PenjualanController::class, 'create'])->name('penjualan.create');
+        Route::post('/penjualan', [PenjualanController::class, 'store'])->name('penjualan.store');
         Route::get('/transaksi/cetak_struk', [PenjualanController::class, 'cetak_struk'])->name('penjualan.cetak_struk');
     });
 
     Route::middleware('level:1,3')->group(function () {
+        Route::get('/laporan/pembelian', [PembelianController::class, 'index'])->name('pembelian.index');
+        Route::get('/laporan/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
         Route::get('/laporan/pendapatan', [LaporanController::class, 'pendapatan'])->name('laporan.pendapatan');
         Route::get('/laporan/pendapatan/export/pdf/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'exportPendapatanPDF'])->name('laporan.pdf_pendapatan');
         Route::get('/laporan/pendapatan/data/{tgl_awal}/{tgl_akhir}', [LaporanController::class, 'dataPendapatan'])->name('laporan.data_pendapatan');

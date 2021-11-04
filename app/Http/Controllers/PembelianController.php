@@ -143,38 +143,4 @@ class PembelianController extends Controller
             'message' => 'Data berhasil disimpan'
         ], 200);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pembelian  $pembelian
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pembelian $pembelian)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pembelian  $pembelian
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pembelian $pembelian)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Pembelian  $pembelian
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pembelian $pembelian)
-    {
-        //
-    }
 }
